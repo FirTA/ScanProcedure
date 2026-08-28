@@ -26,13 +26,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore ScanProcedure.sln
+        run: dotnet restore ScanProcedure.slnx
 
       - name: Build
-        run: dotnet build ScanProcedure.sln --configuration Release --no-restore
+        run: dotnet build ScanProcedure.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test ScanProcedure.sln --configuration Release --no-build
+        run: dotnet test ScanProcedure.slnx --configuration Release --no-build
 
       - name: Publish
         run: dotnet publish ScanProcedure/ScanProcedure.csproj --configuration Release --output ./publish

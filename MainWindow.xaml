@@ -126,6 +126,7 @@
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
             <Button x:Name="BtnCopy" Content="Copy To Clipboard" Click="BtnCopy_Click"/>
             <Button x:Name="BtnSave" Content="Save" Click="BtnSave_Click"/>
+            <Button x:Name="BtnSaveAll" Content="Save All" Click="BtnSaveAll_Click" Visibility="Collapsed"/>
         </StackPanel>
     </Grid>
 </Window>

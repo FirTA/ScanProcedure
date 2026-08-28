@@ -89,6 +89,7 @@ namespace ScanProcedure
             WriteTable.Content = _lastResult.WriteTables.Count;
             Calls.Content = _lastResult.Procedures.Count;
         }
+       
 
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
         {
@@ -112,6 +113,26 @@ namespace ScanProcedure
             MessageBox.Show($"File saved to: {filename}");
         }
 
+        
+        private void BtnSaveAll_Click(object sender, RoutedEventArgs e)
+        {
+            if (_lastResult == null)
+            {
+                MessageBox.Show("No result to save. Please process a file first.");
+                return;
+            }
+
+            foreach( var item in _fileItems)
+            {
+                var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ScanProcedure", item.FileName + ".md");
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                File.WriteAllText(filename, item.ScanResult.ToMarkdown().ToString());
+
+            }
+
+            MessageBox.Show($"File saved to MyDocument/ScanProcedure");
+        }
+
         private void BtnUploadMode_Click(object sender, RoutedEventArgs e)
         {
             RightPanel.Visibility = Visibility.Collapsed;
@@ -120,6 +141,7 @@ namespace ScanProcedure
 
             UploadContainer.Visibility = Visibility.Visible;
             BtnCopyMode.Visibility = Visibility.Visible;
+            BtnSaveAll.Visibility = Visibility.Visible;
 
             // Clear navigation when entering upload mode
             NavPanel.Visibility = Visibility.Collapsed;
@@ -128,6 +150,7 @@ namespace ScanProcedure
 
         private void BtnCopyMode_Click(object sender, RoutedEventArgs e)
         {
+            BtnProcess.Visibility = Visibility.Visible;
             RightPanel.Visibility = Visibility.Visible;
             LeftPanel.Visibility = Visibility.Visible;
             BtnUploadMode.Visibility = Visibility.Visible;
@@ -177,6 +200,7 @@ namespace ScanProcedure
                 UploadContainer.Visibility = Visibility.Collapsed;
                 LeftPanel.Visibility = Visibility.Visible;
                 RightPanel.Visibility = Visibility.Visible;
+                BtnProcess.Visibility = Visibility.Collapsed;
 
                 // Select the first item by default
                 if (_fileItems.Count > 0)
@@ -223,9 +247,5 @@ namespace ScanProcedure
             }
         }
 
-        private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // This can remain empty or be removed
-        }
     }
 }

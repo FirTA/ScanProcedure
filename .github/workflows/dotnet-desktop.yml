@@ -35,7 +35,7 @@ jobs:
         run: dotnet test ScanProcedure.slnx --configuration Release --no-build
 
       - name: Publish
-        run: dotnet publish ScanProcedure/ScanProcedure.csproj --configuration Release --output ./publish
+        run: dotnet publish ScanProcedure.csproj --configuration Release --output ./publish
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

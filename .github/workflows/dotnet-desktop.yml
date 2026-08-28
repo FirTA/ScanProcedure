@@ -1,6 +1,6 @@
-name: ScanProcedure CI
+name: WPF CI
 
-on: 
+on:
   push:
     branches:
       - master
@@ -11,37 +11,34 @@ on:
       - master
       - development
 
-jobs: 
+jobs:
   build:
-    name: Build ScanProcedure Application
+    name: Build WPF Application
     runs-on: windows-2025
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      
+
       - name: Restore dependencies
-        uses: dotnet restore ScanProcedure.sln
+        run: dotnet restore ScanProcedure.sln
 
       - name: Build
-        uses: dotnet build ScanProcedure.sln --configuration Release --no-restore
+        run: dotnet build ScanProcedure.sln --configuration Release --no-restore
 
       - name: Test
-        uses: dotnet test ScanProcedure.sln --configuration Release --no-build
+        run: dotnet test ScanProcedure.sln --configuration Release --no-build
 
       - name: Publish
-        uses: dotnet publish ScanProcedure/ScanProcedure.sln --configuration Release --output ./publish
+        run: dotnet publish ScanProcedure/ScanProcedure.csproj --configuration Release --output ./publish
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ScanProcedure-${{github.sha}}
+          name: ScanProcedure-${{ github.sha }}
           path: ./publish
-
-      
-      

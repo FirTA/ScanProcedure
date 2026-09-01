@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <!--<SolidColorBrush x:Key="PrimaryBrush" Color="#4F46E5"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#F5F7FA"/>
+    <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#4338CA"/>-->
+
+    <!-- Base Color Definitions -->
+    <Color x:Key="PureBlackColor">#FF000000</Color>
+    <Color x:Key="DarkSurfaceColor">#FF121212</Color>
+    <Color x:Key="CardBackgroundColor">#FF1E1E1E</Color>
+    <Color x:Key="BorderDarkColor">#FF2D2D2D</Color>
+
+    <Color x:Key="PrimaryRedColor">#FFE50912</Color>
+    <Color x:Key="HoverRedColor">#FFF6121D</Color>
+    <Color x:Key="PressedRedColor">#FFB80710</Color>
+    <Color x:Key="MutedRedColor">#FF8B0000</Color>
+
+    <Color x:Key="TextPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="TextSecondaryColor">#B3FFFFFF</Color>
+
+    <!-- SolidColorBrush Resources -->
+    <!-- Backgrounds -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource DarkSurfaceColor}"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}"/>
+    <SolidColorBrush x:Key="DeepBlackBrush" Color="{StaticResource PureBlackColor}"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderDarkColor}"/>
+
+    <!-- Accent Brushes (Red Theme) -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryRedColor}"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverRedColor}"/>
+    <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedRedColor}"/>
+    <SolidColorBrush x:Key="MutedBrush" Color="{StaticResource MutedRedColor}"/>
+
+    <!-- Text Brushes -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}"/>
+
+</ResourceDictionary>

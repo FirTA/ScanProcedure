@@ -1,7 +1,4 @@
 ﻿using ProcedureScanner.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ProcedureScanner.Services
@@ -29,7 +26,7 @@ namespace ProcedureScanner.Services
             string cleanSql = RemoveComments(normalizedSql);
 
             var matchName = Regex.Match(cleanSql, @"\b(?:CREATE\s+(?:OR\s+REPLACE\s+)?(?:PROCEDURE|FUNCTION))\s+([a-zA-Z0-9_\.""]+)", RegexOptions.IgnoreCase);
-            result.ProcedureName = matchName.Groups[1].ToString().Replace("\"","");
+            result.ProcedureName = matchName.Groups[1].ToString().Replace("\"", "");
 
             // 1. READ Tables (FROM, JOIN)
             var readMatches = Regex.Matches(cleanSql, @"\b(?:FROM|JOIN)\s+(?!\()(.*?)(?=\b(?:WHERE|ORDER|GROUP|HAVING)\b|[;\r\n\)]|$)", RegexOptions.IgnoreCase);
@@ -37,7 +34,7 @@ namespace ProcedureScanner.Services
             {
                 string table = match.Groups[1].Value.Trim().ToUpper();
                 var tableGroup = table.Split(",");
-                foreach(var tab in tableGroup)
+                foreach (var tab in tableGroup)
                 {
                     var name = tab.ToString().Trim().Split(" ")[0];
                     if (!Regex.IsMatch(name, @"^[a-zA-Z0-9_\.@]+$"))
@@ -60,7 +57,7 @@ namespace ProcedureScanner.Services
             }
 
             // 2. WRITE Tables (INSERT INTO, UPDATE, DELETE FROM, MERGE INTO)
-            var writeMatches = Regex.Matches(cleanSql,@"\b(?:INSERT\s+INTO|UPDATE|DELETE\s+FROM|MERGE\s+INTO|TRUNCATE\sTABLE)\s+([a-zA-Z0-9_\.]+)",RegexOptions.IgnoreCase);
+            var writeMatches = Regex.Matches(cleanSql, @"\b(?:INSERT\s+INTO|UPDATE|DELETE\s+FROM|MERGE\s+INTO|TRUNCATE\sTABLE)\s+([a-zA-Z0-9_\.]+)", RegexOptions.IgnoreCase);
             foreach (Match match in writeMatches)
             {
                 string name = match.Groups[1].Value.Trim().ToUpper();
@@ -73,9 +70,9 @@ namespace ProcedureScanner.Services
             }
 
             // 3. CALLS (Matches EXEC/CALL OR direct procedure invocations like pkg.proc_name();)
-        
 
-                    // A) Explicit calls: CALL my_proc() or EXEC my_proc()
+
+            // A) Explicit calls: CALL my_proc() or EXEC my_proc()
             var explicitCalls = Regex.Matches(
                 cleanSql,
                 @"\b(?:CALL|EXEC|EXECUTE)\s+([a-zA-Z0-9_\.]+)",
@@ -102,8 +99,8 @@ namespace ProcedureScanner.Services
                 string candidate = match.Groups[1].Value.Trim();
 
                 // Ensure it's not a PL/SQL control word or a variable assignment
-                if (!PlSqlKeywords.Contains(candidate) && 
-                    !SqlKeywords.Contains(candidate) && 
+                if (!PlSqlKeywords.Contains(candidate) &&
+                    !SqlKeywords.Contains(candidate) &&
                     !result.Procedures.Contains(candidate, StringComparer.OrdinalIgnoreCase))
                 {
                     result.Procedures.Add(candidate);

@@ -31,12 +31,12 @@ namespace ScanProcedure.Views
             MaxWindow.Visibility = Visibility.Collapsed;
 
         }
-        private void Normal_Click(object sender, RoutedEventArgs e) 
-        { 
+        private void Normal_Click(object sender, RoutedEventArgs e)
+        {
             Window.GetWindow(this).WindowState = WindowState.Normal;
             NormalWindow.Visibility = Visibility.Collapsed;
             MaxWindow.Visibility = Visibility.Visible;
-        } 
+        }
         private void Close_Click(object sender, RoutedEventArgs e) => Window.GetWindow(this).Close();
     }
 }

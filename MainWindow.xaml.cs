@@ -3,20 +3,10 @@ using ProcedureScanner.Models;
 using ProcedureScanner.Services;
 using ScanProcedure.Models;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Reflection;
-using System.Security.Policy;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using Sh = System.Windows.Shapes;
 
 namespace ScanProcedure
 {
@@ -89,7 +79,7 @@ namespace ScanProcedure
             WriteTable.Content = _lastResult.WriteTables.Count;
             Calls.Content = _lastResult.Procedures.Count;
         }
-       
+
 
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
         {
@@ -97,6 +87,27 @@ namespace ScanProcedure
             {
                 Clipboard.SetText(resultText.Text.ToString());
             }
+        }
+
+        private void BtnClearUpload_Click(object sender, RoutedEventArgs e)
+        {
+            _fileItems.Clear();
+            ColNav.Width = new GridLength(0);
+            LeftPanel.Visibility = Visibility.Collapsed;
+            RightPanel.Visibility = Visibility.Collapsed;
+            UploadContainer.Visibility = Visibility.Visible;
+            BtnClearUpload.Visibility = Visibility.Collapsed;
+            clearResult();
+
+        }
+
+        private void clearResult()
+        {
+            ScriptSQL.Document.Blocks.Clear();
+            resultText.Text = "";
+            ReadTable.Content = "0";
+            WriteTable.Content = "0";
+            Calls.Content = "0";
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -113,7 +124,7 @@ namespace ScanProcedure
             MessageBox.Show($"File saved to: {filename}");
         }
 
-        
+
         private void BtnSaveAll_Click(object sender, RoutedEventArgs e)
         {
             if (_lastResult == null)
@@ -122,9 +133,12 @@ namespace ScanProcedure
                 return;
             }
 
-            foreach( var item in _fileItems)
+
+
+            foreach (var item in _fileItems)
             {
-                var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ScanProcedure", item.FileName + ".md");
+                LoadFileContent(item);
+                var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ScanProcedure", item.ScanResult.ProcedureName + ".md");
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
                 File.WriteAllText(filename, item.ScanResult.ToMarkdown().ToString());
 
@@ -193,14 +207,19 @@ namespace ScanProcedure
                 }
 
                 // Show navigation panel
-                ColNav.Width = new GridLength(150, GridUnitType.Pixel);
-                NavPanel.Visibility = Visibility.Visible;
+                if (_fileItems.Count > 1)
+                {
+                    ColNav.Width = new GridLength(150, GridUnitType.Pixel);
+                    NavPanel.Visibility = Visibility.Visible;
+                    BtnProcess.Visibility = Visibility.Collapsed;
+                }
+
+                BtnClearUpload.Visibility = Visibility.Visible;
 
                 // Hide upload container and restore panels
                 UploadContainer.Visibility = Visibility.Collapsed;
                 LeftPanel.Visibility = Visibility.Visible;
                 RightPanel.Visibility = Visibility.Visible;
-                BtnProcess.Visibility = Visibility.Collapsed;
 
                 // Select the first item by default
                 if (_fileItems.Count > 0)
@@ -221,6 +240,15 @@ namespace ScanProcedure
 
         private void LoadFileContent(FileItem fileItem)
         {
+            var DbType = (Item)DbPicker.SelectedValue;
+            if (DbType.Name == DatabaseType.Oracle.ToString())
+            {
+                fileItem.ScanResult = OracleRegexScanner.ParseScript(fileItem.FileContent);
+            }
+            else
+            {
+                fileItem.ScanResult = PostgresRegexScanner.ParseScript(fileItem.FileContent);
+            }
             _currentSelectedFile = fileItem;
 
             // Load the file content into the RichTextBox
@@ -246,6 +274,5 @@ namespace ScanProcedure
                 _lastResult = null;
             }
         }
-
     }
 }

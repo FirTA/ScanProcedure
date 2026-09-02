@@ -1,7 +1,4 @@
 ﻿using ProcedureScanner.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ProcedureScanner.Services
@@ -34,7 +31,7 @@ namespace ProcedureScanner.Services
 
             string procedureName = Regex.Match(cleanSql, @"\b(?:CREATE\s+(?:OR\s+REPLACE\s+)?(?:PROCEDURE|FUNCTION))\s+([a-zA-Z0-9_\.]+)", RegexOptions.IgnoreCase).ToString();
             result.ProcedureName = procedureName;
-            var readMatches = Regex.Matches(cleanSql,@"\b(?:FROM|JOIN)\s+([a-zA-Z0-9_\.]+)",RegexOptions.IgnoreCase);
+            var readMatches = Regex.Matches(cleanSql, @"\b(?:FROM|JOIN)\s+([a-zA-Z0-9_\.]+)", RegexOptions.IgnoreCase);
 
             foreach (Match match in readMatches)
             {
@@ -101,7 +98,7 @@ namespace ProcedureScanner.Services
 
         private static string RemoveComments(string sql)
         {
-            string noBlockComments = Regex.Replace(sql, @"/\*.*?\*/","", RegexOptions.Singleline);
+            string noBlockComments = Regex.Replace(sql, @"/\*.*?\*/", "", RegexOptions.Singleline);
             return Regex.Replace(sql, @"--.*$", "", RegexOptions.Multiline);
         }
 

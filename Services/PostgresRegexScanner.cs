@@ -1,4 +1,4 @@
-﻿using ProcedureScanner.Models;
+﻿using ScanProcedure.Models;
 using System.Text.RegularExpressions;
 
 namespace ProcedureScanner.Services

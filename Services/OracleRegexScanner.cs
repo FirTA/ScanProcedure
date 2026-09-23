@@ -1,7 +1,7 @@
-﻿using ProcedureScanner.Models;
+﻿using ScanProcedure.Models;
 using System.Text.RegularExpressions;
 
-namespace ProcedureScanner.Services
+namespace ScanProcedure.Services
 {
     public static class OracleRegexScanner
     {

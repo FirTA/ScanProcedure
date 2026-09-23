@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
-namespace ProcedureScanner.Models
+namespace ScanProcedure.Models
 {
     public class ScanResult
     {
